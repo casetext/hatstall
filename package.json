@@ -1,0 +1,24 @@
+{
+  "name": "hatstall",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/casetext/hatstall.git"
+  },
+  "author": "daguej",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/casetext/hatstall/issues"
+  },
+  "homepage": "https://github.com/casetext/hatstall",
+  "dependencies": {
+    "aws4": "^1.0.0",
+    "redis": "^0.12.1",
+    "request": "^2.54.0"
+  }
+}
