@@ -32,6 +32,8 @@ You get an invoker instance back from `hatstall()`.  It has:
 ### `invoke(fn, args[, cb])`
 Issues a function invocation request with the supplied args.  If `cb` is specified, it will be called when the *request* is complete (not when the function is complete).  If the request fails, the first argument will contain the `err`.  (Your function may still fail to run or error.  This callback only tells you that the request for invocation succeeded or failed.)
 
+`invoke` also returns a promise for your convenience.
+
 ### `run(fn, deleteAfter)`
 Returns a function that when called will call `invoke(fn, { path, key, data })`.  `path`, `key`, and `data` are populated from the Firebase `Snapshot` passed in.
 

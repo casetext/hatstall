@@ -1,4 +1,5 @@
 var url = require('url'),
+	Q = require('q'),
 	aws4 = require('aws4'),
 	request = require('request');
 
@@ -21,7 +22,7 @@ function LambdaInvoker(opts) {
 
 
 LambdaInvoker.prototype.invoke = function(fn, args, cb) {
-	var self = this, tries = 0;
+	var self = this, tries = 0, defer = Q.defer();
 	args = JSON.stringify(args);
 
 	function tryInvoke() {
@@ -49,24 +50,22 @@ LambdaInvoker.prototype.invoke = function(fn, args, cb) {
 			} else if (res.statusCode != 202) {
 				failed(new Error('Invoke error ' + res.statusCode));
 			} else {
-				if (cb) {
-					cb();
-				}
+				defer.resolve();
 			}
 		});
 	}
 
 	function failed(err) {
 		if (tries++ > 3) {
-			if (cb) {
-				cb(err);
-			}
+			defer.reject(err);
 		} else {
 			setTimeout(tryInvoke, Math.pow(2, tries) * 1000);
 		}
 	}
 
 	tryInvoke();
+	defer.promise.nodeify(cb);
+	return defer.promise;
 };
 
 exports = module.exports = LambdaInvoker;

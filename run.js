@@ -5,7 +5,7 @@ exports.run = function(fn, deleteAfter) {
 	return function(snap) {
 		var path = url.parse(snap.ref().toString()).pathname;
 		path = path.substr(0, path.length - snap.key().length - 1);
-		self.invoke(fn, {
+		return self.invoke(fn, {
 			key: snap.key(),
 			path: path,
 			data: snap.val()
@@ -27,7 +27,7 @@ exports.responder = function(fn) {
 		var path = url.parse(snap.ref().toString()).pathname;
 		// we only want the portion of the path of before the /request/<id>
 		path = path.substr(0, path.lastIndexOf('/', path.length - snap.key().length - 2));
-		self.invoke(fn, {
+		return self.invoke(fn, {
 			key: snap.key(),
 			path: path,
 			data: snap.val()
@@ -42,6 +42,6 @@ exports.responder = function(fn) {
 exports.job = function(fn, args) {
 	var self = this;
 	return function() {
-		self.invoke(fn, args || {});
+		return self.invoke(fn, args || {});
 	};
 };
