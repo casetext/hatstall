@@ -25,6 +25,7 @@ Creates a new invoker using the specified backend.  `opts` are passed to the bac
 
 - `'redis'` - Puts invocation requests on a redis queue
 - `'lambda'` - Invokes functions in AWS Lambda
+- `'internal'` - Calls locavore directly.  Pass in a `Locavore` instance.
 - `'console'` - Spits out the invocation requests on stdout.  Useful for debugging.
 
 You get an invoker instance back from `hatstall()`.  It has:
