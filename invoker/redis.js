@@ -7,14 +7,18 @@ function RedisInvoker(opts) {
 	opts = opts || {};
 	this.queue = opts.queue || 'default-queue';
 	if (opts.redis) {
-		if (typeof opts.redis == 'string') {
-			var parsed = url.parse(opts.redis);
-			opts.redis = {
-				host: parsed.hostname,
-				port: +parsed.port
-			};
+		if (opts.redis.constructor.name == 'RedisClient') {
+			this.redis = opts.redis;
+		} else {
+			if (typeof opts.redis == 'string') {
+				var parsed = url.parse(opts.redis);
+				opts.redis = {
+					host: parsed.hostname,
+					port: +parsed.port
+				};
+			}
+			this.redis = redis.createClient(opts.redis.port, opts.redis.host, opts.redis.options || {});
 		}
-		this.redis = redis.createClient(opts.redis.port, opts.redis.host, opts.redis.options || {});
 	} else {
 		this.redis = redis.createClient();
 	}
